@@ -1,0 +1,32 @@
+﻿@page "/todo"
+@using Newtonsoft.Json
+
+<h3>Todo (@_todos.Count(todo => !todo.IsDone))</h3>
+
+<ul>
+    @foreach (var todo in _todos)
+    {
+        <li>
+            <input type="checkbox" @bind="todo.IsDone"/>
+            <input @bind="todo.Title"/>
+        </li>
+    }
+</ul>
+
+<input placeholder="Something todo" @bind="_title"/>
+<button @onclick="AddTodo">Add todo</button>
+
+<hr>
+<pre>@JsonConvert.SerializeObject(_todos, Formatting.Indented)</pre>
+
+@code {
+    private readonly List<TodoItem> _todos = new();
+    private string _title;
+
+    private void AddTodo()
+    {
+        _todos.Add(new TodoItem {Title = _title});
+        _title = string.Empty;
+    }
+
+}
