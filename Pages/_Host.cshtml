@@ -8,28 +8,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BlazorTodo</title>
-    <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css" rel="stylesheet" />
-    <link href="BlazorTodo.styles.css" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="~/"/>
+
+    <link rel="stylesheet" href="todomvc/base.css"/>
+    <link rel="stylesheet" href="todomvc/index.css"/>
+    <link href="BlazorTodo.styles.css" rel="stylesheet"/>
+
+    <title>Todo</title>
 </head>
 <body>
-    <component type="typeof(App)" render-mode="ServerPrerendered" />
+<section class="todoapp">
+    <component type="typeof(App)" render-mode="ServerPrerendered"/>
+</section>
 
-    <div id="blazor-error-ui">
-        <environment include="Staging,Production">
-            An error has occurred. This application may no longer respond until reloaded.
-        </environment>
-        <environment include="Development">
-            An unhandled exception has occurred. See browser dev tools for details.
-        </environment>
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
+<footer class="info">
+    <p>Double-click to edit a todo</p>
+    <!-- Change this out with your name and url ↓ -->
+    <p>Created by <a href="http://todomvc.com">you</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
 
-    <script src="_framework/blazor.server.js"></script>
+
+<script src="_framework/blazor.server.js"></script>
+<script src="todomvc/base.js"></script>
 </body>
 </html>

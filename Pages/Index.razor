@@ -1,7 +1,82 @@
 @page "/"
 
-<h1>Hello, world!</h1>
+<form class="header" @onsubmit="AddTodo">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" @bind="_title" autofocus/>
+</form>
 
-Welcome to your new app.
+@if (_todos.Count > 0)
+{
+    <section class="main">
+        <input id="toggle-all" class="toggle-all" type="checkbox" @bind="AllCompleted">
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list">
+            @foreach (var todo in _todos)
+            {
+                <li class="@TodoClass(todo)" @ondblclick="() => todo.IsEditing = !todo.IsEditing">
+                    <div class="view">
+                        <input class="toggle" type="checkbox" @bind="todo.IsCompleted">
+                        <label>@todo.Title</label>
+                        <button class="destroy" @onclick="() => RemoveTodo(todo)"></button>
+                    </div>
+                    <form @onsubmit="() => todo.IsEditing = !todo.IsEditing">
+                        <input class="edit" @bind="todo.Title" autofocus>
+                    </form>
+                </li>
+            }
+        </ul>
+    </section>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <footer class="footer">
+        <span class="todo-count"><strong>@_todos.Count(t => !t.IsCompleted)</strong> item left</span>
+        @if (_todos.Any(t => t.IsCompleted))
+        {
+            <button class="clear-completed" @onclick="ClearCompleted">Clear completed</button>
+        }
+    </footer>
+}
+
+@code {
+    private readonly List<TodoItem> _todos = new();
+    private string _title;
+
+    private bool AllCompleted
+    {
+        get { return _todos.All(t => t.IsCompleted); }
+        set
+        {
+            foreach (var totod in _todos)
+            {
+                totod.IsCompleted = value;
+            }
+        }
+    }
+
+    private static string TodoClass(TodoItem todo)
+    {
+        return todo.IsEditing
+            ? "editing"
+            : todo.IsCompleted ? "completed" : null;
+    }
+
+    private void AddTodo()
+    {
+        _todos.Add(new TodoItem {Title = _title});
+        _title = string.Empty;
+    }
+
+    private void RemoveTodo(TodoItem todo)
+    {
+        _todos.Remove(todo);
+    }
+
+    private void ClearCompleted()
+    {
+        var original = _todos.ToList();
+        foreach (var todo in original.Where(t => t.IsCompleted))
+        {
+            RemoveTodo(todo);
+        }
+    }
+
+}
